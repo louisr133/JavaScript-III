@@ -1,55 +1,103 @@
-/*
-  Object oriented design is commonly used in video games.  For this part of the assignment you will be implementing several constructor functions with their correct inheritance hierarchy.
+function GameObject(attributes){
+	this.createdAt = attributes.createdAt;
+	this.name = attributes.name;
+	this.dimensions = attributes.dimensions;
+	this.x = attributes.x;
+	this.y = attributes.y;
+	this.show = attributes.show;
+	this.alive = attributes.alive;
+	
+}
 
-  In this file you will be creating three constructor functions: GameObject, CharacterStats, Humanoid.  
+GameObject.prototype.destroy = function() {
+	if(this.healthPoints <= 0){
+		this.show = false;
+	}
+}
 
-  At the bottom of this file are 3 objects that all end up inheriting from Humanoid.  Use the objects at the bottom of the page to test your constructor functions.
-  
-  Each constructor function has unique properties and methods that are defined in their block comments below:
-*/
-  
-/*
-  === GameObject ===
-  * createdAt
-  * name
-  * dimensions (These represent the character's size in the video game)
-  * destroy() // prototype method that returns: `${this.name} was removed from the game.`
-*/
+GameObject.prototype.display = function() {
+	if(this.show == true){
+		
+		
+		//circle(this.x + (this.dimensions.width)/2,this.y  - 25 ,this.dimensions.width * .9);
+		noStroke();
+		if(this.healthPoints <= 1){
+			fill(color(255,0,0));
+			circle(this.x + (this.dimensions.width)/2,this.y  - 25 ,this.dimensions.width * .9);
+			rect(this.x,this.y,this.dimensions.width,this.healthPoints * 10);
+		} else {
+			circle(this.x + (this.dimensions.width)/2,this.y  - 25 ,this.dimensions.width * .9);
+			rect(this.x,this.y,this.dimensions.width,this.healthPoints * 10);
+		}
+		
+		
+		
+		fill(color(0));
+		circle(this.x + 10,this.y-20,10);
+		circle(this.x + 40,this.y-20,10);
+	} 
+}
 
-/*
-  === CharacterStats ===
-  * healthPoints
-  * takeDamage() // prototype method -> returns the string '<object name> took damage.'
-  * should inherit destroy() from GameObject's prototype
-*/
+GameObject.prototype.gravity = function() {
+	if(this.y < (400 - this.dimensions.height) ){
+		this.y += 2;
+	} else {
+		
+	}
+}
 
-/*
-  === Humanoid (Having an appearance or character resembling that of a human.) ===
-  * team
-  * weapons
-  * language
-  * greet() // prototype method -> returns the string '<object name> offers a greeting in <object language>.'
-  * should inherit destroy() from GameObject through CharacterStats
-  * should inherit takeDamage() from CharacterStats
-*/
- 
-/*
-  * Inheritance chain: GameObject -> CharacterStats -> Humanoid
-  * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
-  * Instances of CharacterStats should have all of the same properties as GameObject.
-*/
+
+
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+
+function CharacterStats(status) {
+	GameObject.call(this, status);
+	
+	this.healthPoints = status.healthPoints;
+}
+
+CharacterStats.prototype.takeDamage = function() {
+	if(this.healthPoints > 0){
+		this.healthPoints -= 1
+	}
+}
+
+
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+function Humanoid(character) {
+	
+	
+	CharacterStats.call(this,character);
+	
+	this.team = character.team;
+	this.weapons = character.weapons;
+	this.language = character.language;
+	
+}
+
+Humanoid.prototype.greet = function() {
+	return `${this.name} offers a greeting in ${this.language}`
+}
+
+
+
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
-  const mage = new Humanoid({
+
+  var mage = new Humanoid({
     createdAt: new Date(),
+    show: true,
+    x: 400,
+    y: 100,
     dimensions: {
-      length: 2,
-      width: 1,
-      height: 1,
+      length: 7,
+      width: 50,
+      height: 100,
     },
-    healthPoints: 5,
+    healthPoints: 10,
     name: 'Bruce',
     team: 'Mage Guild',
     weapons: [
@@ -58,13 +106,16 @@
     language: 'Common Tongue',
   });
 
-  const swordsman = new Humanoid({
+  var swordsman = new Humanoid({
     createdAt: new Date(),
     dimensions: {
       length: 2,
-      width: 2,
-      height: 2,
+      width: 40,
+      height: 150,
     },
+    show: true,
+    x: 240,
+    y: 100,
     healthPoints: 15,
     name: 'Sir Mustachio',
     team: 'The Round Table',
@@ -75,14 +126,17 @@
     language: 'Common Tongue',
   });
 
-  const archer = new Humanoid({
+  var archer = new Humanoid({
     createdAt: new Date(),
+    show: true,
     dimensions: {
       length: 1,
-      width: 2,
-      height: 4,
+      width: 55,
+      height: 120,
     },
-    healthPoints: 10,
+    x: 70,
+    y: 300,
+    healthPoints: 12,
     name: 'Lilith',
     team: 'Forest Kingdom',
     weapons: [
@@ -91,20 +145,6 @@
     ],
     language: 'Elvish',
   });
+  
 
-  console.log(mage.createdAt); // Today's date
-  console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
-  console.log(swordsman.healthPoints); // 15
-  console.log(mage.name); // Bruce
-  console.log(swordsman.team); // The Round Table
-  console.log(mage.weapons); // Staff of Shamalama
-  console.log(archer.language); // Elvish
-  console.log(archer.greet()); // Lilith offers a greeting in Elvish.
-  console.log(mage.takeDamage()); // Bruce took damage.
-  console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
-
-  // Stretch task: 
-  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
-  // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
-  // * Create two new objects, one a villain and one a hero and fight it out with methods!
+  
