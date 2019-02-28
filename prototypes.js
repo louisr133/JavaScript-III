@@ -135,7 +135,7 @@ Humanoid.prototype.greet = function() {
       height: 120,
     },
     x: 70,
-    y: 300,
+    y: 200,
     healthPoints: 12,
     name: 'Lilith',
     team: 'Forest Kingdom',

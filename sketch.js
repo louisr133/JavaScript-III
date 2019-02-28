@@ -12,7 +12,7 @@ function draw(){
 
 	fill(color(255,50,220));
 	if(archer.show == true){
-		text(`Archer HP: ${archer.healthPoints}`, 30, 30);
+		text(`^ Archer HP: ${archer.healthPoints}`, 30, 30);
 	} else {
 		text(`Archer HP: DEAD`, 30, 30);
 	}
@@ -21,7 +21,7 @@ function draw(){
 	fill(color(253,200,20));
 	
 	if(swordsman.show == true){
-		text(`Swordsman HP: ${swordsman.healthPoints}`, 200, 30);
+		text(`< Swordsman HP: ${swordsman.healthPoints}`, 200, 30);
 	} else {
 		text(`Swordsman HP: DEAD`, 200, 30);
 	}
@@ -32,7 +32,7 @@ function draw(){
 	
 
 	if(mage.show == true){
-		text(`Mage HP: ${mage.healthPoints}`, 430, 30);
+		text(`> Mage HP: ${mage.healthPoints}`, 430, 30);
 	} else {
 		text(`Mage HP: DEAD`, 430, 30);
 	}
@@ -49,10 +49,11 @@ function draw(){
 	
 	if(mage.show == false && archer.show == false && swordsman.show == false){
 		background(255,0,0);
-		
-		
-	}
+
+		text(`THEY DEAD`, 250, 200);
+	} 
 	
+
 	
 }
 
