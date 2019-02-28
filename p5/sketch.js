@@ -1,6 +1,10 @@
-  
+var punch;
+
 function setup() {
 	createCanvas(600, 400);
+	soundFormats('mp3', 'ogg');
+	punch = loadSound('sounds/PUNCH.mp3');
+
 }
 
 function draw(){
@@ -53,16 +57,25 @@ function draw(){
 		text(`THEY DEAD`, 250, 200);
 	} 
 	
-
 	
 }
 
 function keyPressed(){
-	if(keyCode == UP_ARROW){
+
+	if(archer.show == true && keyCode == UP_ARROW){
 		archer.takeDamage();
-	} else if (keyCode == LEFT_ARROW){
+		punch.play();
+	}	 
+
+	if(swordsman.show == true && keyCode == LEFT_ARROW){
 		swordsman.takeDamage();
-	} else if (keyCode == RIGHT_ARROW){
+		punch.play();
+	}	 
+
+
+	if(mage.show == true && keyCode == RIGHT_ARROW){
 		mage.takeDamage();
-	} 
+		punch.play();
+	}  
+
 }
